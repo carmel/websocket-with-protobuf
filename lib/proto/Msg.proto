@@ -1,0 +1,82 @@
+syntax = "proto2";
+
+package com.yg.mps.netty;
+
+option optimize_for = SPEED;
+option java_package = "netty";
+option java_outer_classname = "TransferProtocol";
+
+message Message{
+
+  /**
+   1.心跳信息
+   2.终端信息
+   3.指令
+   11.文件传输请求
+   12.文件传输指令
+   13.文件传输数据
+   */
+  optional int32 type = 1;
+  optional string uuid = 2;
+
+  oneof dataBody {
+    HeartBeat heart_beat = 3;
+    ClientInfo client_info = 4;
+    Order order = 5;
+    FileDescInfo file_desc_info = 6;
+    FileBurstInstruct file_burst_instruct = 7;
+    FileBurstData file_burst_data = 8;
+  }
+}
+
+message HeartBeat{
+  optional string availableCapacity = 1;  //客户端可用ROM
+}
+
+message ClientInfo{
+  optional string version = 1;            //版本
+  optional string name = 2;               //终端名称
+  optional string totalCapacity = 3;      //客户端总ROM
+  optional string availableCapacity = 4;  //客户端可用ROM
+  optional string cpuType = 5;            //cpu类型
+  optional string memorySize = 6;         //内存大小
+  optional string mac = 7;                //mac
+  optional string deviceSerial = 8;       //设备编码
+  optional string os = 9;                 //os
+  optional string osVersion = 10;         //os版本
+  optional string volume = 11;            //音量
+  optional string maxVolume = 12;         //最大音量
+  optional string resolution = 13;        //默认分辨率
+  optional string resolutionArr = 14;     //支持的分辨率
+}
+
+message Order{
+  optional string order = 1;              //指令
+  optional string parameter = 2;          //数据
+}
+
+message FileDescInfo{
+  optional string file_url = 1;
+  optional string file_name = 2;
+  optional int64 file_size = 3;
+  optional int32 file_type = 4;           //文件类型 1直接播放 2解压不播放
+}
+
+message FileBurstInstruct{
+  optional int32 status = 1;
+  optional string file_url= 2;
+  optional int32 read_position = 3;
+  optional int32 file_type = 4;         //文件类型 1直接播放 2解压不播放
+}
+
+
+message FileBurstData{
+  optional string file_url = 1;
+  optional string file_name = 2;
+  optional int32  begin_position = 3;
+  optional int32 end_position = 4;
+  optional bytes bytes = 5;
+  optional int32 status = 6;
+  optional int32 file_type = 7;         //文件类型 1直接播放 2解压不播放
+}
+

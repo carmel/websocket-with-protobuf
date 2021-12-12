@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package = "./;message";
+
+message Message {
+  int32 id = 1;
+  message Person {
+    int32 id = 1;
+    string name = 2;
+  }
+
+  Person author = 2;
+  string text = 3;
+}

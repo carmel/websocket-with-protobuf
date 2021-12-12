@@ -1,0 +1,3 @@
+class DevInfo {
+  int? type;
+}
